@@ -1,5 +1,3 @@
-package utils.result;
-
 import java.lang.StackWalker.StackFrame;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -9,9 +7,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import utils.result.annotations.IfError;
-import utils.result.annotations.Log;
-import utils.result.logic.LoggerLogic;
+import annotations.IfError;
+import annotations.Log;
+import logic.LoggerLogic;
 
 /**
  * <h2>Result&lt;T, E&gt; – A type-safe, functional alternative to exceptions

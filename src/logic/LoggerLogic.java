@@ -1,8 +1,9 @@
-package utils.result.logic;
+package logic;
 
 import java.lang.StackWalker.StackFrame;
 
-import utils.result.annotations.Log;
+import annotations.Log;
+
 
 public class LoggerLogic {
     public static void print(Log log, StackFrame frame, String value) {
