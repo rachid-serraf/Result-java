@@ -35,6 +35,8 @@ public class Main {
     public static void validateUser() {
         var user = new User(1, "bob", "bob@example.com");
         ff(user);
+        var re = Result.handle(() -> 6/0);
+
         user.findByEmail(null);
     }
 

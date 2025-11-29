@@ -475,4 +475,52 @@ public sealed interface Result<T, E> permits Result.Ok, Result.Err {
             case Err(var error) -> other;
         };
     }
+
+    @FunctionalInterface
+    public interface CheckedSupplier<T, E extends Exception> {
+        T get() throws E;
+    }
+
+    @FunctionalInterface
+    public interface CheckedSupplier2<E extends Exception> {
+        void get() throws E;
+    }
+
+    public static <T, E extends Exception> Result<T, E> handle(CheckedSupplier<T, E> supplier) {
+        try {
+            return Result.ok(supplier.get());
+        } catch (Exception e) {
+            @SuppressWarnings("unchecked")
+            E typedError = (E) e;
+            return Result.err(typedError);
+        }
+    }
+
+    public static <T> Result<T, Exception> handleAll(CheckedSupplier<T, Exception> supplier) {
+        try {
+            return Result.ok(supplier.get());
+        } catch (Exception e) {
+            return Result.err(e);
+        }
+    }
+
+    public static Result<String, Exception> handle(CheckedSupplier2<Exception> action) {
+        try {
+            action.get();
+            return Result.ok("OK()");
+        } catch (Exception e) {
+            return Result.err(e);
+        }
+    }
+
+    // With custom error type
+    public static <T, E extends Exception> Result<T, E> handle(
+            CheckedSupplier<T, E> supplier,
+            Function<Exception, E> errorMapper) {
+        try {
+            return Result.ok(supplier.get());
+        } catch (Exception e) {
+            return Result.err(errorMapper.apply(e));
+        }
+    }
 }
