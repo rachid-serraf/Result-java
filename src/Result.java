@@ -11,6 +11,7 @@ import annotations.IfError;
 import annotations.Log;
 import logic.LoggerLogic;
 
+
 /**
  * <h2>Result&lt;T, E&gt; – A type-safe, functional alternative to exceptions
  * and nulls</h2>
@@ -482,7 +483,7 @@ public sealed interface Result<T, E> permits Result.Ok, Result.Err {
     }
 
     @FunctionalInterface
-    public interface CheckedSupplier2<E extends Exception> {
+    public interface CheckedSupplierVoid<E extends Exception> {
         void get() throws E;
     }
 
@@ -504,9 +505,18 @@ public sealed interface Result<T, E> permits Result.Ok, Result.Err {
         }
     }
 
-    public static Result<String, Exception> handle(CheckedSupplier2<Exception> action) {
+    public static Result<String, Exception> handle(CheckedSupplierVoid<Exception> action) {
         try {
             action.get();
+            return Result.ok("OK()");
+        } catch (Exception e) {
+            return Result.err(e);
+        }
+    }
+
+    public static Result<String, Exception> handleAll(CheckedSupplierVoid<Exception> supplier) {
+        try {
+            supplier.get();
             return Result.ok("OK()");
         } catch (Exception e) {
             return Result.err(e);
